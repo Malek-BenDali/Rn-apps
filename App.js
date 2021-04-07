@@ -1,9 +1,9 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
-import {Todo} from './src/components/todoApp';
+import Navigation from './src/navigation/MainNavigation';
 
 const App = () => {
-  return <Todo />;
+  return <Navigation />;
 };
 
 const styles = StyleSheet.create({});
