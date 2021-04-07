@@ -6,6 +6,8 @@ import {
   TouchableOpacity,
   StyleSheet,
   FlatList,
+  Modal,
+  Pressable,
 } from 'react-native';
 import TodoItem from './TodoItem';
 
@@ -13,12 +15,14 @@ const Todo = () => {
   const [todoList, setTodoList] = useState([]);
   const [goal, setGoal] = useState('');
   const [emptyInput, setEmptyInput] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
 
   const handlePress = () => {
     if (goal) {
       setTodoList([...todoList, {id: Date.now().toString(), value: goal}]);
       setGoal('');
       setEmptyInput(false);
+      setModalVisible(!modalVisible);
     } else setEmptyInput(true);
   };
 
@@ -28,9 +32,16 @@ const Todo = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.research}>
-        <View style={{width: '60%'}}>
+    <>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          Alert.alert('Modal has been closed.');
+          setModalVisible(!modalVisible);
+        }}>
+        <View style={styles.container}>
           <TextInput
             placeholder="add todo here"
             style={styles.searchInput}
@@ -43,20 +54,39 @@ const Todo = () => {
               u must enter a valid todo Goal
             </Text>
           )}
-        </View>
-        <TouchableOpacity style={styles.button} onPress={() => handlePress()}>
-          <Text style={styles.buttonText}>ADD</Text>
-        </TouchableOpacity>
-      </View>
 
-      <FlatList
-        data={todoList}
-        keyExtractor={item => item.id}
-        renderItem={({item}) => (
-          <TodoItem item={item} deleteItem={deleteItem} />
-        )}
-      />
-    </View>
+          <View style={styles.research}>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => handlePress()}>
+              <Text style={styles.buttonText}>ADD</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.buttonCancel}
+              onPress={() => handlePress()}>
+              <Text style={styles.buttonText}>Cancel</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+
+      {!modalVisible && (
+        <>
+          <Pressable
+            style={[styles.button, styles.addButton]}
+            onPress={() => setModalVisible(true)}>
+            <Text style={styles.buttonText}>ADD TODO</Text>
+          </Pressable>
+          <FlatList
+            data={todoList}
+            keyExtractor={item => item.id}
+            renderItem={({item}) => (
+              <TodoItem item={item} deleteItem={deleteItem} />
+            )}
+          />
+        </>
+      )}
+    </>
   );
 };
 
@@ -72,6 +102,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     padding: 10,
     width: '100%',
+    marginBottom: 10,
   },
   research: {
     flexDirection: 'row',
@@ -86,6 +117,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  buttonCancel: {
+    width: 70,
+    height: 50,
+    borderRadius: 10,
+    backgroundColor: '#ff5274',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   buttonText: {
     fontWeight: 'bold',
     color: 'white',
@@ -93,5 +132,10 @@ const styles = StyleSheet.create({
   errorMessage: {
     color: 'blue',
     marginTop: 5,
+  },
+  addButton: {
+    alignSelf: 'center',
+    marginTop: 10,
+    width: '50%',
   },
 });

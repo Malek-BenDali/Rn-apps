@@ -4,11 +4,14 @@ import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 const TodoItem = ({item: {id, value}, deleteItem}) => {
   return (
     <View style={styles.container}>
-      <Text> {value} </Text>
+      <Text style={styles.text} numberOfLines={2}>
+        {' '}
+        {value}{' '}
+      </Text>
       <TouchableOpacity
         style={styles.deleteButton}
         onPress={() => deleteItem(id)}>
-        <Text>Delete</Text>
+        <Text style={styles.buttonText}>Delete</Text>
       </TouchableOpacity>
     </View>
   );
@@ -34,7 +37,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     height: '104%',
     right: -1,
-    width: 50,
+    width: 60,
     borderRadius: 10,
+  },
+  buttonText: {
+    fontWeight: 'bold',
+    color: 'white',
+  },
+  text: {
+    width: '80%',
+    paddingLeft: 5,
   },
 });
