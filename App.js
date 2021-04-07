@@ -1,12 +1,9 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
+import {Todo} from './src/components/todoApp';
 
 const App = () => {
-  return (
-    <View>
-      <Text>hola</Text>
-    </View>
-  );
+  return <Todo />;
 };
 
 const styles = StyleSheet.create({});
