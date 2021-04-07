@@ -33,14 +33,7 @@ const Todo = () => {
 
   return (
     <>
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          Alert.alert('Modal has been closed.');
-          setModalVisible(!modalVisible);
-        }}>
+      <Modal animationType="slide" transparent={true} visible={modalVisible}>
         <View style={styles.container}>
           <TextInput
             placeholder="add todo here"
@@ -63,7 +56,7 @@ const Todo = () => {
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.buttonCancel}
-              onPress={() => handlePress()}>
+              onPress={() => setModalVisible(!modalVisible)}>
               <Text style={styles.buttonText}>Cancel</Text>
             </TouchableOpacity>
           </View>
