@@ -1,6 +1,11 @@
 import React, {useState, useRef, useEffect} from 'react';
-import {StyleSheet, Text, View, Alert} from 'react-native';
-import {NumberContainer, Card, PrimaryButton} from '../components';
+import {StyleSheet, View, Alert} from 'react-native';
+import {
+  NumberContainer,
+  Card,
+  PrimaryButton,
+  OpenSansText,
+} from '../components';
 import {colors} from '../constants';
 
 const generateRandomBetweet = (min, max, exclude) => {
@@ -51,7 +56,7 @@ const GameScreen = props => {
 
   return (
     <View style={styles.screen}>
-      <Text> Opponent's Guess</Text>
+      <OpenSansText> Opponent's Guess</OpenSansText>
       <NumberContainer> {currentGuess} </NumberContainer>
       <Card style={styles.buttonContainer}>
         <PrimaryButton text="lower" onPress={() => nextGuessHandler('lower')} />

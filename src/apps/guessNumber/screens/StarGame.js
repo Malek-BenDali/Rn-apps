@@ -10,7 +10,7 @@ import {
   Animated,
 } from 'react-native';
 
-import {Card, Input, NumberContainer} from '../components';
+import {Card, Input, NumberContainer, OpenSansText} from '../components';
 import {colors} from '../constants';
 const StarGame = ({startGameHandler}) => {
   const [secretNumber, setSecretNumber] = useState('');
@@ -59,6 +59,7 @@ const StarGame = ({startGameHandler}) => {
       <View style={styles.container}>
         <Text style={styles.title}> Start a New Game </Text>
         <Card style={styles.card}>
+          <OpenSansText> Select a number :</OpenSansText>
           <Input
             style={styles.input}
             placeholder="00"
@@ -150,6 +151,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   title: {
+    fontFamily: 'OpenSans-Bold',
     marginVertical: 10,
     fontSize: 24,
     fontStyle: 'italic',
