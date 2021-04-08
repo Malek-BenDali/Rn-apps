@@ -8,6 +8,7 @@ import {
   FlatList,
   Modal,
   Pressable,
+  StatusBar,
 } from 'react-native';
 import TodoItem from './TodoItem';
 
@@ -33,6 +34,7 @@ const Todo = () => {
 
   return (
     <>
+      <StatusBar backgroundColor="#26c4ec" />
       <Modal animationType="slide" transparent={true} visible={modalVisible}>
         <View style={styles.container}>
           <TextInput

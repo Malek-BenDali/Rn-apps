@@ -15,6 +15,8 @@ const GameScreen = props => {
   const [currentGuess, setCurrentGuess] = useState(
     generateRandomBetweet(0, 100, props.choicedNumber),
   );
+
+  const rounds = useRef(0);
   const currentLow = useRef(1);
   const currentHeight = useRef(100);
 
@@ -30,12 +32,22 @@ const GameScreen = props => {
     }
     if (direction === 'lower') currentHeight.current = currentGuess;
     else currentLow.current = currentGuess;
-    generateRandomBetweet(
+    rounds.current = rounds.current + 1;
+    const nextNumber = generateRandomBetweet(
       currentLow.current,
       currentHeight.current,
       currentGuess,
     );
+    setCurrentGuess(nextNumber);
   };
+
+  const {choicedNumber, onGameOver} = props;
+
+  useEffect(() => {
+    if (currentGuess === choicedNumber) {
+      onGameOver(rounds.current);
+    }
+  }, [currentGuess, choicedNumber, onGameOver]);
 
   return (
     <View style={styles.screen}>
