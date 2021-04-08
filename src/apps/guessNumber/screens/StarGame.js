@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useRef} from 'react';
 import {
   StyleSheet,
   Text,
@@ -7,17 +7,24 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   Alert,
+  Animated,
 } from 'react-native';
 
-import {Card, Input} from '../components';
+import {Card, Input, NumberContainer} from '../components';
 import {colors} from '../constants';
-const StarGame = () => {
+const StarGame = ({startGameHandler}) => {
   const [secretNumber, setSecretNumber] = useState('');
   const [confirm, setConfirm] = useState(false);
   const [selectedNumber, setSelectedNumber] = useState();
+  const animatedValue = useRef(new Animated.Value(0)).current;
 
   const handleNumberChange = number => {
     setSecretNumber(number.replace(/[^0-9]/g, ''));
+  };
+  const handleReset = () => {
+    setSecretNumber('');
+    setConfirm(false);
+    animatedValue.setValue(0);
   };
 
   const handleConfirm = () => {
@@ -36,6 +43,12 @@ const StarGame = () => {
     setConfirm(true);
     setSelectedNumber(choseNumber);
     setSecretNumber('');
+    Keyboard.dismiss();
+    Animated.timing(animatedValue, {
+      toValue: 1,
+      duration: 1000,
+      useNativeDriver: false,
+    }).start();
   };
 
   return (
@@ -59,7 +72,7 @@ const StarGame = () => {
           <View style={styles.buttonsContainer}>
             <TouchableOpacity
               style={{...styles.button, backgroundColor: colors.secondary}}
-              onPress={() => setSecretNumber('')}>
+              onPress={() => handleReset()}>
               <Text style={styles.buttonText}>Reset</Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -69,7 +82,38 @@ const StarGame = () => {
             </TouchableOpacity>
           </View>
         </Card>
-        {confirm && <Text> Chosen Number : {selectedNumber} </Text>}
+        {confirm && (
+          <Animated.View
+            style={[
+              styles.summaryContainer,
+              {
+                transform: [
+                  {
+                    scale: animatedValue.interpolate({
+                      inputRange: [0, 0.5, 1],
+                      outputRange: [0, 0.5, 1],
+                    }),
+                  },
+                  {
+                    rotateY: animatedValue.interpolate({
+                      inputRange: [0, 0.5, 1],
+                      outputRange: ['0deg', '360deg', '720deg'],
+                    }),
+                  },
+                ],
+              },
+            ]}>
+            <Card style={styles.cardPadding}>
+              <Text> You selected </Text>
+              <NumberContainer> {selectedNumber} </NumberContainer>
+              <TouchableOpacity
+                style={[styles.button, styles.startGameButton]}
+                onPress={() => startGameHandler(selectedNumber)}>
+                <Text style={styles.buttonText}>Start Game</Text>
+              </TouchableOpacity>
+            </Card>
+          </Animated.View>
+        )}
       </View>
     </TouchableWithoutFeedback>
   );
@@ -82,6 +126,19 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 10,
     alignItems: 'center',
+  },
+  startGameButton: {
+    width: 110,
+    height: 40,
+  },
+  cardPadding: {
+    padding: 10,
+  },
+  summaryContainer: {
+    marginTop: 10,
+    width: 180,
+    alignItems: 'center',
+    zIndex: 5,
   },
   card: {
     paddingVertical: 10,
