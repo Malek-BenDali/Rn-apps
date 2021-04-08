@@ -1,13 +1,28 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
-import {PrimaryButton, OpenSansText} from '../components';
+import {StyleSheet, Image, View, Text} from 'react-native';
+import {PrimaryButton, OpenSansText, OpenSansBoldText} from '../components';
+import {colors} from '../constants';
 
 const GameOverScreen = ({guessRounds, userNumber, configerNewGame}) => {
   return (
     <View style={styles.screen}>
-      <OpenSansText>Game is over</OpenSansText>
-      <OpenSansText>Number of rounds : {guessRounds} </OpenSansText>
-      <OpenSansText>Number Was : {userNumber} </OpenSansText>
+      <OpenSansBoldText style={styles.title}>The game is over</OpenSansBoldText>
+      <View style={styles.imageContainer}>
+        <Image
+          style={styles.image}
+          source={require('../../../assets/images/success.png')}
+        />
+      </View>
+      <OpenSansText>
+        Your phone needed
+        <OpenSansBoldText style={styles.highlight}>
+          {` ${guessRounds} `}
+        </OpenSansBoldText>
+        to guess the number
+        <OpenSansBoldText style={styles.highlight}>
+          {` ${userNumber}`}
+        </OpenSansBoldText>
+      </OpenSansText>
       <PrimaryButton
         text="Play again"
         style={{width: 100}}
@@ -24,5 +39,24 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  title: {
+    fontSize: 22,
+  },
+  image: {
+    width: '100%',
+    height: '100%',
+  },
+  imageContainer: {
+    width: 300,
+    height: 300,
+    borderRadius: 150,
+    borderWidth: 3,
+    borderColor: colors.primary,
+    overflow: 'hidden',
+    marginVertical: 30,
+  },
+  highlight: {
+    color: colors.primary,
   },
 });

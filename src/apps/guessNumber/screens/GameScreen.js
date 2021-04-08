@@ -1,5 +1,5 @@
 import React, {useState, useRef, useEffect} from 'react';
-import {StyleSheet, View, Alert} from 'react-native';
+import {StyleSheet, View, Alert, ScrollView, Text} from 'react-native';
 import {
   NumberContainer,
   Card,
@@ -7,6 +7,7 @@ import {
   OpenSansText,
 } from '../components';
 import {colors} from '../constants';
+import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 
 const generateRandomBetweet = (min, max, exclude) => {
   min = Math.ceil(min);
@@ -17,11 +18,12 @@ const generateRandomBetweet = (min, max, exclude) => {
 };
 
 const GameScreen = props => {
+  const [GuessList, setGuessList] = useState([]);
   const [currentGuess, setCurrentGuess] = useState(
     generateRandomBetweet(0, 100, props.choicedNumber),
+    () => setGuessList(currentGuess),
   );
 
-  const rounds = useRef(0);
   const currentLow = useRef(1);
   const currentHeight = useRef(100);
 
@@ -37,7 +39,6 @@ const GameScreen = props => {
     }
     if (direction === 'lower') currentHeight.current = currentGuess;
     else currentLow.current = currentGuess;
-    rounds.current = rounds.current + 1;
     const nextNumber = generateRandomBetweet(
       currentLow.current,
       currentHeight.current,
@@ -49,8 +50,9 @@ const GameScreen = props => {
   const {choicedNumber, onGameOver} = props;
 
   useEffect(() => {
+    setGuessList([currentGuess, ...GuessList]);
     if (currentGuess === choicedNumber) {
-      onGameOver(rounds.current);
+      onGameOver(GuessList.length);
     }
   }, [currentGuess, choicedNumber, onGameOver]);
 
@@ -59,12 +61,23 @@ const GameScreen = props => {
       <OpenSansText> Opponent's Guess</OpenSansText>
       <NumberContainer> {currentGuess} </NumberContainer>
       <Card style={styles.buttonContainer}>
-        <PrimaryButton text="lower" onPress={() => nextGuessHandler('lower')} />
-        <PrimaryButton
-          text="greater"
-          onPress={() => nextGuessHandler('greater')}
-        />
+        <PrimaryButton onPress={() => nextGuessHandler('lower')}>
+          <AntDesignIcon color="white" name="minus" size={30} />
+        </PrimaryButton>
+        <PrimaryButton onPress={() => nextGuessHandler('greater')}>
+          <AntDesignIcon color="white" name="plus" size={30} />
+        </PrimaryButton>
       </Card>
+      <View style={styles.list}>
+        <ScrollView contentContainerStyle={styles.listContainer}>
+          {GuessList.map((guess, index) => (
+            <View key={index} style={styles.listItem}>
+              <Text>#{GuessList.length - index}</Text>
+              <OpenSansText> {guess} </OpenSansText>
+            </View>
+          ))}
+        </ScrollView>
+      </View>
     </View>
   );
 };
@@ -92,5 +105,23 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  listItem: {
+    borderColor: colors.primary,
+    padding: 15,
+    marginVertical: 10,
+    flexDirection: 'row',
+    backgroundColor: 'white',
+    borderWidth: 1,
+    justifyContent: 'space-between',
+  },
+  list: {
+    flex: 1,
+    width: '80%',
+  },
+  listContainer: {
+    flexGrow: 1,
+    alignItems: 'center',
+    justifyContent: 'flex-end',
   },
 });

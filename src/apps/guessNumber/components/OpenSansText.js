@@ -9,10 +9,21 @@ const OpenSansText = props => {
   );
 };
 
-export default OpenSansText;
+const OpenSansBoldText = props => {
+  return (
+    <Text {...props} style={{...styles.bold, ...props.style}}>
+      {props.children}
+    </Text>
+  );
+};
+
+export {OpenSansText, OpenSansBoldText};
 
 const styles = StyleSheet.create({
   container: {
     fontFamily: 'OpenSans-Regular',
+  },
+  bold: {
+    fontFamily: 'OpenSans-Bold',
   },
 });
