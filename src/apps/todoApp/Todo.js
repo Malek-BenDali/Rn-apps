@@ -40,6 +40,7 @@ const Todo = () => {
             style={styles.searchInput}
             onChangeText={goal => setGoal(goal)}
             value={goal}
+            autoFocus={true}
           />
           {emptyInput && (
             <Text style={styles.errorMessage}>

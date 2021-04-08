@@ -1,3 +1,4 @@
 import Header from './Header';
 import Card from './Card';
-export {Header, Card};
+import Input from './Input';
+export {Header, Card, Input};
