@@ -1,12 +1,10 @@
 import React from 'react';
 import {View, Text} from 'react-native';
 
+import MealsNavigator from './navigation/MealsNavigator';
+
 const MealApp = () => {
-  return (
-    <View>
-      <Text>Meal App</Text>
-    </View>
-  );
+  return <MealsNavigator />;
 };
 
 export default MealApp;
