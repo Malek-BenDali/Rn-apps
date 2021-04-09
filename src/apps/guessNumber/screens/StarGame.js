@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import {
   StyleSheet,
   Text,
@@ -8,6 +8,8 @@ import {
   Keyboard,
   Alert,
   Animated,
+  Dimensions,
+  ScrollView,
 } from 'react-native';
 
 import {Card, Input, NumberContainer, OpenSansText} from '../components';
@@ -16,7 +18,20 @@ const StarGame = ({startGameHandler}) => {
   const [secretNumber, setSecretNumber] = useState('');
   const [confirm, setConfirm] = useState(false);
   const [selectedNumber, setSelectedNumber] = useState();
+  const [buttonWidth, setButtonWidth] = useState(
+    Dimensions.get('window').width / 4,
+  );
   const animatedValue = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    const updateLayout = () => {
+      setButtonWidth(Dimensions.get('window').width / 4);
+    };
+    Dimensions.addEventListener('change', updateLayout);
+    return () => {
+      Dimensions.removeEventListener('change', updateLayout);
+    };
+  });
 
   const handleNumberChange = number => {
     setSecretNumber(number.replace(/[^0-9]/g, ''));
@@ -52,71 +67,79 @@ const StarGame = ({startGameHandler}) => {
   };
 
   return (
-    <TouchableWithoutFeedback
-      onPress={() => {
-        Keyboard.dismiss();
-      }}>
-      <View style={styles.container}>
-        <Text style={styles.title}> Start a New Game </Text>
-        <Card style={styles.card}>
-          <OpenSansText> Select a number :</OpenSansText>
-          <Input
-            style={styles.input}
-            placeholder="00"
-            keyboardType="number-pad"
-            autoFocus={true}
-            maxLength={2}
-            blurOnSubmit
-            onChangeText={number => handleNumberChange(number)}
-            value={secretNumber}
-          />
-          <View style={styles.buttonsContainer}>
-            <TouchableOpacity
-              style={{...styles.button, backgroundColor: colors.secondary}}
-              onPress={() => handleReset()}>
-              <Text style={styles.buttonText}>Reset</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => handleConfirm()}>
-              <Text style={styles.buttonText}>Confirm</Text>
-            </TouchableOpacity>
-          </View>
-        </Card>
-        {confirm && (
-          <Animated.View
-            style={[
-              styles.summaryContainer,
-              {
-                transform: [
-                  {
-                    scale: animatedValue.interpolate({
-                      inputRange: [0, 0.5, 1],
-                      outputRange: [0, 0.5, 1],
-                    }),
-                  },
-                  {
-                    rotateY: animatedValue.interpolate({
-                      inputRange: [0, 0.5, 1],
-                      outputRange: ['0deg', '360deg', '720deg'],
-                    }),
-                  },
-                ],
-              },
-            ]}>
-            <Card style={styles.cardPadding}>
-              <Text> You selected </Text>
-              <NumberContainer> {selectedNumber} </NumberContainer>
+    <ScrollView>
+      {/* <KeyboardAvoidingView behavior="position" keyboardVerticalOffset={30}> */}
+      <TouchableWithoutFeedback
+        onPress={() => {
+          Keyboard.dismiss();
+        }}>
+        <View style={styles.container}>
+          <Text style={styles.title}> Start a New Game </Text>
+          <Card style={styles.card}>
+            <OpenSansText> Select a number :</OpenSansText>
+            <Input
+              style={styles.input}
+              placeholder="00"
+              keyboardType="number-pad"
+              autoFocus={true}
+              maxLength={2}
+              blurOnSubmit
+              onChangeText={number => handleNumberChange(number)}
+              value={secretNumber}
+            />
+            <View style={styles.buttonsContainer}>
               <TouchableOpacity
-                style={[styles.button, styles.startGameButton]}
-                onPress={() => startGameHandler(selectedNumber)}>
-                <Text style={styles.buttonText}>Start Game</Text>
+                style={{
+                  ...styles.button,
+                  backgroundColor: colors.secondary,
+                  width: buttonWidth,
+                }}
+                onPress={() => handleReset()}>
+                <Text style={styles.buttonText}>Reset</Text>
               </TouchableOpacity>
-            </Card>
-          </Animated.View>
-        )}
-      </View>
-    </TouchableWithoutFeedback>
+              <TouchableOpacity
+                style={{...styles.button, width: buttonWidth}}
+                onPress={() => handleConfirm()}>
+                <Text style={styles.buttonText}>Confirm</Text>
+              </TouchableOpacity>
+            </View>
+          </Card>
+          {confirm && (
+            <Animated.View
+              style={[
+                styles.summaryContainer,
+                {
+                  transform: [
+                    {
+                      scale: animatedValue.interpolate({
+                        inputRange: [0, 0.5, 1],
+                        outputRange: [0, 0.5, 1],
+                      }),
+                    },
+                    {
+                      rotateY: animatedValue.interpolate({
+                        inputRange: [0, 0.5, 1],
+                        outputRange: ['0deg', '360deg', '720deg'],
+                      }),
+                    },
+                  ],
+                },
+              ]}>
+              <Card style={styles.cardPadding}>
+                <Text> You selected </Text>
+                <NumberContainer> {selectedNumber} </NumberContainer>
+                <TouchableOpacity
+                  style={[styles.button, styles.startGameButton]}
+                  onPress={() => startGameHandler(selectedNumber)}>
+                  <Text style={styles.buttonText}>Start Game</Text>
+                </TouchableOpacity>
+              </Card>
+            </Animated.View>
+          )}
+        </View>
+      </TouchableWithoutFeedback>
+      {/* </KeyboardAvoidingView> */}
+    </ScrollView>
   );
 };
 
@@ -159,7 +182,7 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: colors.primary,
-    width: 80,
+    // width: buttonWidth,
     height: 40,
     borderRadius: 10,
     justifyContent: 'center',

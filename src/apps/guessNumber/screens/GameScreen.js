@@ -1,5 +1,12 @@
 import React, {useState, useRef, useEffect} from 'react';
-import {StyleSheet, View, Alert, ScrollView, Text} from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Alert,
+  ScrollView,
+  Text,
+  Dimensions,
+} from 'react-native';
 import {
   NumberContainer,
   Card,
@@ -23,9 +30,26 @@ const GameScreen = props => {
     generateRandomBetweet(0, 100, props.choicedNumber),
     () => setGuessList(currentGuess),
   );
+  const [availableDeviceWidth, setAvailableDeviceWidth] = useState(
+    Dimensions.get('window').width,
+  );
+  const [availableDeviceHeight, setAvailableDeviceHeight] = useState(
+    Dimensions.get('window').height,
+  );
 
   const currentLow = useRef(1);
   const currentHeight = useRef(100);
+
+  useEffect(() => {
+    const updateLayout = () => {
+      setAvailableDeviceHeight(Dimensions.get('window').height);
+      setAvailableDeviceWidth(Dimensions.get('window').width);
+    };
+    Dimensions.addEventListener('change', updateLayout);
+    return () => {
+      Dimensions.removeEventListener('change', updateLayout);
+    };
+  });
 
   const nextGuessHandler = direction => {
     if (
@@ -55,6 +79,33 @@ const GameScreen = props => {
       onGameOver(GuessList.length);
     }
   }, [currentGuess, choicedNumber, onGameOver]);
+
+  if (availableDeviceHeight < 500) {
+    return (
+      <View style={styles.screen}>
+        <OpenSansText> Opponent's Guess</OpenSansText>
+        <View style={styles.controls}>
+          <PrimaryButton onPress={() => nextGuessHandler('lower')}>
+            <AntDesignIcon color="white" name="minus" size={30} />
+          </PrimaryButton>
+          <NumberContainer> {currentGuess} </NumberContainer>
+          <PrimaryButton onPress={() => nextGuessHandler('greater')}>
+            <AntDesignIcon color="white" name="plus" size={30} />
+          </PrimaryButton>
+        </View>
+        <View style={styles.list}>
+          <ScrollView contentContainerStyle={styles.listContainer}>
+            {GuessList.map((guess, index) => (
+              <View key={index} style={styles.listItem}>
+                <Text>#{GuessList.length - index}</Text>
+                <OpenSansText> {guess} </OpenSansText>
+              </View>
+            ))}
+          </ScrollView>
+        </View>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.screen}>
@@ -114,14 +165,22 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderWidth: 1,
     justifyContent: 'space-between',
+    width: '80%',
+    borderRadius: 10,
   },
   list: {
     flex: 1,
-    width: '80%',
+    width: 300,
   },
   listContainer: {
     flexGrow: 1,
     alignItems: 'center',
     justifyContent: 'flex-end',
+  },
+  controls: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    width: '80%',
+    alignItems: 'center',
   },
 });
