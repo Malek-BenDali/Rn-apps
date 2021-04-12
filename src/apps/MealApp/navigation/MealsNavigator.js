@@ -11,9 +11,13 @@ import {
 import {colors} from '../assets';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import {createMaterialBottomTabNavigator} from 'react-navigation-material-bottom-tabs';
 
 const Stack = createStackNavigator();
-const Tab = createBottomTabNavigator();
+const Tab =
+  Platform.OS === 'android'
+    ? createMaterialBottomTabNavigator()
+    : createBottomTabNavigator();
 
 const option = {
   headerStyle: {
@@ -22,23 +26,20 @@ const option = {
   headerTintColor: Platform.OS === 'android' ? '#fff' : colors.primary,
 };
 
-const MealsNavigator = () => {
-  return (
-    <Stack.Navigator initialRouteName="Category" screenOptions={option}>
-      <Stack.Screen name="CategoryMeals" component={CategoryMealsScreen} />
-      <Stack.Screen name="Category" component={CategoriesScreen} />
-      <Stack.Screen name="MealDetail" component={MealDetailScreen} />
-    </Stack.Navigator>
-  );
-};
-const Favorites = () => {
-  return (
-    <Stack.Navigator initialRouteName="Favorites" screenOptions={option}>
-      <Stack.Screen name="Favorites" component={FavoritesScreen} />
-      <Stack.Screen name="Filter" component={FilterScreen} />
-    </Stack.Navigator>
-  );
-};
+const MealsNavigator = () => (
+  <Stack.Navigator initialRouteName="Category" screenOptions={option}>
+    <Stack.Screen name="CategoryMeals" component={CategoryMealsScreen} />
+    <Stack.Screen name="Category" component={CategoriesScreen} />
+    <Stack.Screen name="MealDetail" component={MealDetailScreen} />
+  </Stack.Navigator>
+);
+
+const Favorites = () => (
+  <Stack.Navigator initialRouteName="Favorites" screenOptions={option}>
+    <Stack.Screen name="Favorites" component={FavoritesScreen} />
+    <Stack.Screen name="Filter" component={FilterScreen} />
+  </Stack.Navigator>
+);
 
 const tabBarOptions = {
   activeTintColor: colors.secondary,
