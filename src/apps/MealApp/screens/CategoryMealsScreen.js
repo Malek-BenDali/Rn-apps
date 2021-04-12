@@ -20,6 +20,7 @@ const CategoryMealsScreen = ({navigation, route}) => {
         data={displayedMeals}
         keyExtractor={item => item.id}
         renderItem={({item}) => <RenderMeal item={item} />}
+        style={{width: '100%'}}
       />
     </View>
   );

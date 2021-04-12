@@ -7,6 +7,7 @@ import {
   CategoriesScreen,
   FavoritesScreen,
   FilterScreen,
+  MealDetailScreen,
 } from '../screens';
 import {colors} from '../assets';
 
@@ -27,6 +28,7 @@ const MealsNavigator = () => {
       <Stack.Screen name="Category" component={CategoriesScreen} />
       <Stack.Screen name="Favorites" component={FavoritesScreen} />
       <Stack.Screen name="Filter" component={FilterScreen} />
+      <Stack.Screen name="MealDetail" component={MealDetailScreen} />
     </Stack.Navigator>
   );
 };
