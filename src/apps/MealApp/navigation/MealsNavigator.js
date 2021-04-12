@@ -1,29 +1,32 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
+import {Platform} from 'react-native';
 import {
   CategoryDetailScreen,
   CategoryMealsScreen,
-  CategoryScreen,
+  CategoriesScreen,
   FavoritesScreen,
   FilterScreen,
 } from '../screens';
+import {colors} from '../assets';
 
 const Stack = createStackNavigator();
 
+const option = {
+  headerStyle: {
+    backgroundColor: Platform.OS === 'android' ? colors.primary : '#fff',
+  },
+  headerTintColor: Platform.OS === 'android' ? '#fff' : colors.primary,
+};
+
 const MealsNavigator = () => {
   return (
-    <Stack.Navigator initialRouteName="CategoryScreen">
-      <Stack.Screen
-        name="CategoryDetailScreen"
-        component={CategoryDetailScreen}
-      />
-      <Stack.Screen
-        name="CategoryMealsScreen"
-        component={CategoryMealsScreen}
-      />
-      <Stack.Screen name="CategoryScreen" component={CategoryScreen} />
-      <Stack.Screen name="FavoritesScreen" component={FavoritesScreen} />
-      <Stack.Screen name="FilterScreen" component={FilterScreen} />
+    <Stack.Navigator initialRouteName="Category" screenOptions={option}>
+      <Stack.Screen name="CategoryDetail" component={CategoryDetailScreen} />
+      <Stack.Screen name="CategoryMeals" component={CategoryMealsScreen} />
+      <Stack.Screen name="Category" component={CategoriesScreen} />
+      <Stack.Screen name="Favorites" component={FavoritesScreen} />
+      <Stack.Screen name="Filter" component={FilterScreen} />
     </Stack.Navigator>
   );
 };
