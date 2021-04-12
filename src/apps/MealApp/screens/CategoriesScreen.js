@@ -9,31 +9,20 @@ import {
 } from 'react-native';
 import {CATEGORIES} from '../data/dummyData';
 import {colors} from '../assets';
+import {CategoryGridTile} from '../components';
 
 const CategoriesScreen = props => {
   props.navigation.setOptions({
     headerTitle: 'Meals Categories',
   });
-  const renderGridItem = ({item}) => {
-    return (
-      <TouchableOpacity
-        style={styles.gridItemStyle}
-        onPress={() =>
-          props.navigation.navigate('CategoryMeals', {
-            categoryId: item.id,
-          })
-        }>
-        <Text> {item.title} </Text>
-      </TouchableOpacity>
-    );
-  };
+
   return (
     <>
       <FlatList
         data={CATEGORIES}
         keyExtractor={item => item.id}
         numColumns={2}
-        renderItem={renderGridItem}
+        renderItem={({item}) => <CategoryGridTile item={item} />}
       />
       <StatusBar backgroundColor={colors.primary} />
     </>
