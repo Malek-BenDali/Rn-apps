@@ -1,7 +1,5 @@
 import React from 'react';
-import {StyleSheet, Text, View, FlatList} from 'react-native';
-import {colors} from '../assets';
-import {RenderMeal} from '../components';
+import {MealList} from '../components';
 import {CATEGORIES, MEALS} from '../data/dummyData';
 
 const CategoryMealsScreen = ({navigation, route}) => {
@@ -14,24 +12,7 @@ const CategoryMealsScreen = ({navigation, route}) => {
   navigation.setOptions({
     headerTitle: selectedCategory.title,
   });
-  return (
-    <View style={styles.screen}>
-      <FlatList
-        data={displayedMeals}
-        keyExtractor={item => item.id}
-        renderItem={({item}) => <RenderMeal item={item} />}
-        style={{width: '100%'}}
-      />
-    </View>
-  );
+  return <MealList data={displayedMeals} />;
 };
 
 export default CategoryMealsScreen;
-
-const styles = StyleSheet.create({
-  screen: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});

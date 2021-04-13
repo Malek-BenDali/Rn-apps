@@ -1,19 +1,22 @@
 import React from 'react';
-import {
-  StyleSheet,
-  Text,
-  Platform,
-  TouchableOpacity,
-  FlatList,
-  StatusBar,
-} from 'react-native';
+import {StyleSheet, FlatList, StatusBar} from 'react-native';
 import {CATEGORIES} from '../data/dummyData';
 import {colors} from '../assets';
-import {CategoryGridTile} from '../components';
+import {CategoryGridTile, CustomBottonHeader} from '../components';
+import {HeaderButtons, Item} from 'react-navigation-header-buttons';
 
-const CategoriesScreen = props => {
-  props.navigation.setOptions({
+const CategoriesScreen = ({navigation}) => {
+  navigation.setOptions({
     headerTitle: 'Meals Categories',
+    headerLeft: () => (
+      <HeaderButtons HeaderButtonComponent={CustomBottonHeader}>
+        <Item
+          title="Menu"
+          iconName="ios-menu"
+          onPress={() => navigation.openDrawer()}
+        />
+      </HeaderButtons>
+    ),
   });
 
   return (

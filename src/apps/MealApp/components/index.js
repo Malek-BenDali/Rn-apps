@@ -1,4 +1,5 @@
 import CategoryGridTile from './CategoryGridTile';
 import RenderMeal from './RenderMeal';
 import CustomBottonHeader from './CustomHeaderButton';
-export {CategoryGridTile, RenderMeal, CustomBottonHeader};
+import MealList from './MealList';
+export {CategoryGridTile, MealList, RenderMeal, CustomBottonHeader};

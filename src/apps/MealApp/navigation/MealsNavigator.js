@@ -11,13 +11,9 @@ import {
 import {colors} from '../assets';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {createMaterialBottomTabNavigator} from 'react-navigation-material-bottom-tabs';
 
 const Stack = createStackNavigator();
-const Tab =
-  Platform.OS === 'android'
-    ? createMaterialBottomTabNavigator()
-    : createBottomTabNavigator();
+const Tab = createBottomTabNavigator();
 
 const option = {
   headerStyle: {
@@ -37,7 +33,12 @@ const MealsNavigator = () => (
 const Favorites = () => (
   <Stack.Navigator initialRouteName="Favorites" screenOptions={option}>
     <Stack.Screen name="Favorites" component={FavoritesScreen} />
-    <Stack.Screen name="Filter" component={FilterScreen} />
+    <Stack.Screen name="MealDetail" component={MealDetailScreen} />
+  </Stack.Navigator>
+);
+const Filter = () => (
+  <Stack.Navigator initialRouteName="Favorites" screenOptions={option}>
+    <Stack.Screen name="Filter" component={FilterScreen} />{' '}
   </Stack.Navigator>
 );
 
@@ -62,6 +63,15 @@ const Tabs = () => (
       options={{
         tabBarIcon: tabInfo => {
           return <Ionicons name="ios-star" size={25} color={tabInfo.color} />;
+        },
+      }}
+    />
+    <Tab.Screen
+      name="Filter"
+      component={Filter}
+      options={{
+        tabBarIcon: tabInfo => {
+          return <Ionicons name="ios-filter" size={25} color={tabInfo.color} />;
         },
       }}
     />

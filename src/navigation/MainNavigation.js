@@ -1,5 +1,4 @@
 import React from 'react';
-import {Text, View} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import {Todo, GuessNumber, MealApp} from '../apps';
@@ -12,7 +11,13 @@ export default function MainNavigation() {
       <Drawer.Navigator initialRouteName="Todo">
         <Drawer.Screen name="Todo" component={Todo} />
         <Drawer.Screen name="GuessTheNumber" component={GuessNumber} />
-        <Drawer.Screen name="MealApp" component={MealApp} />
+        <Drawer.Screen
+          name="MealApp"
+          component={MealApp}
+          options={{
+            drawerLabel: 'Meals',
+          }}
+        />
       </Drawer.Navigator>
     </NavigationContainer>
   );
