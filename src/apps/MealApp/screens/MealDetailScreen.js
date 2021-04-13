@@ -1,9 +1,10 @@
 import React from 'react';
 import {StyleSheet, Text, ScrollView, Image, View} from 'react-native';
-import {MEALS} from '../data/dummyData';
 import {HeaderButtons, Item} from 'react-navigation-header-buttons';
 import {useNavigation} from '@react-navigation/core';
 import {CustomBottonHeader, CustomText} from '../components';
+import {useSelector, useDispatch} from 'react-redux';
+import {toggleFavorite} from '../store/actions/meals';
 
 const ListItem = props => (
   <View style={styles.ListItem}>
@@ -14,8 +15,12 @@ const ListItem = props => (
 const MealDetailScreen = ({route}) => {
   const navigation = useNavigation();
   const mealId = route.params.mealId;
-
-  const selectedMeal = MEALS.find(meal => meal.id === mealId);
+  const meals = useSelector(state => state.meals.meals);
+  const dispatch = useDispatch();
+  const toggleFavoriteHandler = () => {
+    dispatch(toggleFavorite(mealId));
+  };
+  const selectedMeal = meals.find(meal => meal.id === mealId);
   const {
     affordability,
     categoryIds,
@@ -40,7 +45,7 @@ const MealDetailScreen = ({route}) => {
           title="Favorite"
           iconName="ios-star"
           onPress={() => {
-            console.log('fav');
+            toggleFavoriteHandler();
           }}
         />
       </HeaderButtons>

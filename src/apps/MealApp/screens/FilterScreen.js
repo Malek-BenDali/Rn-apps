@@ -43,11 +43,11 @@ const FilterScreen = ({navigation}) => {
     [isGlutenFree, isLactoseFree, isVegan, isVegetarian],
   );
 
-  useEffect(() => {
-    navigation.setParams({
-      save: saveFilters,
-    });
-  }, [saveFilters]);
+  // useEffect(() => {
+  //   navigation.setParams({
+  //     save: saveFilters,
+  //   });
+  // }, [saveFilters]);
 
   return (
     <View style={styles.screen}>
