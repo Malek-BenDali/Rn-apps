@@ -38,7 +38,7 @@ const Favorites = () => (
 );
 const Filter = () => (
   <Stack.Navigator initialRouteName="Favorites" screenOptions={option}>
-    <Stack.Screen name="Filter" component={FilterScreen} />{' '}
+    <Stack.Screen name="Filter" component={FilterScreen} />
   </Stack.Navigator>
 );
 
